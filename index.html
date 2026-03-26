@@ -9,26 +9,64 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="mobile-nav" aria-label="Primary navigation">
             <ul>
-                <li>Home</li>
-                <li>Upgrades</li>
-                <li>Communities</li>
-                <li>Rankings</li>
+                <li><button class="nav-item is-active" data-target="home" type="button">Home</button></li>
+                <li><button class="nav-item" data-target="upgrades" type="button">Upgrades</button></li>
+                <li><button class="nav-item" data-target="communities" type="button">Communities</button></li>
+                <li><button class="nav-item" data-target="rankings" type="button">Rankings</button></li>
             </ul>
         </nav>
     </header>
     <main>
-        <button id = "info">Info</button>
-        <button id = "donations">Current Donations</button>
-        <button id = "clicker"><img src = "" alt = "Water droplet"></button>
-        <p id = "dropdisplay"></p>
-        <p>droplets</p>
-        <p><span id = "ratedisplay">0.0</span>/sec</p>
-
+        <section id = "home" class="game-section">
+            <h2>Home</h2>
+            <div class="home-corner-actions">
+                <button id = "info" class="corner-btn" aria-label="Info">ℹ️</button>
+                <button id = "donations" class="corner-btn" aria-label="Current donations">💵</button>
+            </div>
+            <button id = "clicker">💧</button>
+            <div class="home-stats">
+                <p id = "dropdisplay"></p>
+                <p>droplets</p>
+                <p class="rate-text"><span id = "ratedisplay">0.0</span>/sec</p>
+            </div>
+        </section>
+        <section id = "upgrades" class="game-section">
+            <h2>⬆️Upgrades</h2>
+            <p class="upgrade-summary">Upgrades owned: <span id="total-upgrades-owned">0</span></p>
+            <div class="upgrades-grid">
+                <button class="upgrade-card" data-upgrade-id="pump" type="button">
+                    <h3>Hand-dug Well</h3>
+                    <p>Cost: <span class="upgrade-cost">10</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">1</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="crew" type="button">
+                    <h3>Drilled Well</h3>
+                    <p>Cost: <span class="upgrade-cost">50</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">5</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="rig" type="button">
+                    <h3>Rainwater Catchment</h3>
+                    <p>Cost: <span class="upgrade-cost">200</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">20</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+            </div>
+        </section>
+        <section id="communities" class="game-section">
+            <h2>Communities</h2>
+            <p>Community features coming soon.</p>
+        </section>
+        <section id="rankings" class="game-section">
+            <h2>Rankings</h2>
+            <p>Global rankings coming soon.</p>
+        </section>
     </main>
     <footer>
-
+        <button id="reset-game" class="reset-btn" type="button">Reset</button>
     </footer>
 </body>
 </html>
