@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CleanTap</title>
     <link rel="stylesheet" href="style.css">
     <script src = "script.js" defer></script>
 </head>
 <body>
+    <div id="difficulty-screen" class="difficulty-screen" aria-live="polite">
+        <div class="difficulty-card">
+            <h2>Choose Difficulty</h2>
+            <p class="difficulty-subtitle">Select your challenge before starting this run.</p>
+            <div class="difficulty-options">
+                <button class="difficulty-option" data-difficulty="easy" type="button">
+                    <h3>Easy</h3>
+                    <p>No droplet-loss event and better lucky surge chance.</p>
+                </button>
+                <button class="difficulty-option" data-difficulty="normal" type="button">
+                    <h3>Normal</h3>
+                    <p>Balanced event rates and standard progression.</p>
+                </button>
+                <button class="difficulty-option" data-difficulty="hard" type="button">
+                    <h3>Hard</h3>
+                    <p>Higher costs and slightly tougher random setbacks.</p>
+                </button>
+            </div>
+            <p id="difficulty-summary" class="difficulty-summary"></p>
+            <button id="continue-game" class="continue-game" type="button">Continue</button>
+        </div>
+    </div>
+
     <header>
         <nav class="mobile-nav" aria-label="Primary navigation">
             <ul>
@@ -20,16 +43,33 @@
     </header>
     <main>
         <section id = "home" class="game-section">
+            <div class="brand-lockup">
+                <img class="brand-logo" src="cw_vertical_white.jpg" alt="CleanTap logo">
+                <noscript>
+                    <p class="brand-logo-fallback">CleanTap</p>
+                </noscript>
+                <p class="brand-tagline">A charity: water inspired clean water idle game</p>
+            </div>
             <h2>Home</h2>
             <div class="home-corner-actions">
-                <button id = "info" class="corner-btn" aria-label="Info">ℹ️</button>
-                <button id = "donations" class="corner-btn" aria-label="Current donations">💵</button>
+                <button id="info" class="corner-btn" aria-label="About charity: water" type="button">ℹ️</button>
+                <button id="donations" class="corner-btn" aria-label="Donate to charity: water" type="button">💵</button>
             </div>
             <button id = "clicker">💧</button>
             <div class="home-stats">
                 <p id = "dropdisplay"></p>
                 <p>droplets</p>
                 <p class="rate-text"><span id = "ratedisplay">0.0</span>/sec</p>
+                <p class="difficulty-current">Mode: <span id="difficulty-display">Normal</span></p>
+            </div>
+            <div class="milestone-panel">
+                <h3>Unlock Milestones</h3>
+                <p id="next-milestone" class="next-milestone" aria-live="polite"></p>
+                <p class="milestone-log-prompt">Want the full roadmap? Open the milestone log.</p>
+                <button id="milestone-log-toggle" class="milestone-log-toggle" type="button" aria-expanded="false">Show Milestone Log</button>
+                <div id="milestone-log" class="milestone-log" hidden>
+                    <ul id="milestone-list" class="milestone-list" aria-live="polite"></ul>
+                </div>
             </div>
         </section>
         <section id = "upgrades" class="game-section">
@@ -37,21 +77,66 @@
             <p class="upgrade-summary">Upgrades owned: <span id="total-upgrades-owned">0</span></p>
             <div class="upgrades-grid">
                 <button class="upgrade-card" data-upgrade-id="pump" type="button">
-                    <h3>Hand-dug Well</h3>
+                    <h3><span class="upgrade-icon" aria-hidden="true">🪣</span> Hand-dug Wells</h3>
+                    <p class="upgrade-desc">Skilled laborers dig by hand to reach shallow aquifers.</p>
                     <p>Cost: <span class="upgrade-cost">10</span> droplets</p>
                     <p>Produces +<span class="upgrade-rate">1</span>/sec</p>
                     <p>Owned: <span class="upgrade-owned">0</span></p>
                 </button>
                 <button class="upgrade-card" data-upgrade-id="crew" type="button">
-                    <h3>Drilled Well</h3>
+                    <h3><span class="upgrade-icon" aria-hidden="true">🛠️</span> Drilled Wells</h3>
+                    <p class="upgrade-desc">Drilling teams reach deeper groundwater sources.</p>
                     <p>Cost: <span class="upgrade-cost">50</span> droplets</p>
                     <p>Produces +<span class="upgrade-rate">5</span>/sec</p>
                     <p>Owned: <span class="upgrade-owned">0</span></p>
                 </button>
                 <button class="upgrade-card" data-upgrade-id="rig" type="button">
-                    <h3>Rainwater Catchment</h3>
+                    <h3><span class="upgrade-icon" aria-hidden="true">🌧️</span> Rainwater Catchments</h3>
+                    <p class="upgrade-desc">Roof gutters route rain into safe storage tanks.</p>
                     <p>Cost: <span class="upgrade-cost">200</span> droplets</p>
                     <p>Produces +<span class="upgrade-rate">20</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="gravity" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">⛰️</span> Gravity Fed Systems</h3>
+                    <p class="upgrade-desc">Elevation carries water downhill to tap points.</p>
+                    <p>Cost: <span class="upgrade-cost">450</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">45</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="piped" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">🚰</span> Piped Systems</h3>
+                    <p class="upgrade-desc">Pipe networks supply multiple community tap stands.</p>
+                    <p>Cost: <span class="upgrade-cost">900</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">95</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="purify" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">🧪</span> Water Purification Systems</h3>
+                    <p class="upgrade-desc">Treatment removes contaminants from existing sources.</p>
+                    <p>Cost: <span class="upgrade-cost">1800</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">180</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="biosand" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">🧱</span> BioSand Filters</h3>
+                    <p class="upgrade-desc">Sand and biology layers help filter unsafe water.</p>
+                    <p>Cost: <span class="upgrade-cost">3000</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">300</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="spring" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">🏞️</span> Spring Protections</h3>
+                    <p class="upgrade-desc">Systems protect and capture flow from natural springs.</p>
+                    <p>Cost: <span class="upgrade-cost">5200</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">500</span>/sec</p>
+                    <p>Owned: <span class="upgrade-owned">0</span></p>
+                </button>
+                <button class="upgrade-card" data-upgrade-id="latrine" type="button">
+                    <h3><span class="upgrade-icon" aria-hidden="true">🚻</span> Latrines</h3>
+                    <p class="upgrade-desc">Safe sanitation access supports long-term community health.</p>
+                    <p>Cost: <span class="upgrade-cost">8000</span> droplets</p>
+                    <p>Produces +<span class="upgrade-rate">800</span>/sec</p>
                     <p>Owned: <span class="upgrade-owned">0</span></p>
                 </button>
             </div>
@@ -67,6 +152,33 @@
     </main>
     <footer>
         <button id="reset-game" class="reset-btn" type="button">Reset</button>
+        <div class="footer-links" aria-label="charity water links">
+            <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">charity: water</a>
+            <a href="https://www.charitywater.org/our-work" target="_blank" rel="noopener noreferrer">Our Work</a>
+            <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate</a>
+        </div>
     </footer>
+
+    <div id="offline-popup" class="offline-popup" hidden>
+        <div class="offline-popup-card">
+            <h3>Welcome back</h3>
+            <p>You were away for <span id="offline-duration">0s</span>.</p>
+            <p>You earned <strong id="offline-earned">0</strong> droplets while offline.</p>
+            <button id="offline-popup-close" type="button">Collect</button>
+        </div>
+    </div>
+
+    <div id="resource-popup" class="resource-popup" hidden>
+        <div class="resource-popup-card">
+            <h3 id="resource-popup-title">Learn More</h3>
+            <p id="resource-popup-text">Discover more about charity: water.</p>
+            <div class="resource-popup-actions">
+                <a id="resource-popup-primary" href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">Learn More</a>
+                <button id="resource-popup-close" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="success-sound" preload="auto" src="superpuyofans1234-winner-game-sound-404167.mp3"></audio>
 </body>
 </html>
