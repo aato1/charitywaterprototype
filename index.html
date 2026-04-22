@@ -31,25 +31,26 @@
         </div>
     </div>
 
-    <header>
-        <nav class="mobile-nav" aria-label="Primary navigation">
-            <ul>
-                <li><button class="nav-item is-active" data-target="home" type="button">Home</button></li>
-                <li><button class="nav-item" data-target="upgrades" type="button">Upgrades</button></li>
-                <li><button class="nav-item" data-target="communities" type="button">Communities</button></li>
-                <li><button class="nav-item" data-target="rankings" type="button">Rankings</button></li>
-            </ul>
-        </nav>
+    <header class="desktop-header" aria-label="Desktop site header">
+        <div class="desktop-brand">
+            <h1>CleanTap</h1>
+            <p class="brand-tagline">A charity: water inspired idle game</p>
+        </div>
+        <div class="desktop-logo-slot">
+            <img class="brand-logo desktop-brand-logo" src="cw_vertical_white.jpg" alt="CleanTap logo">
+        </div>
+        <div class="desktop-actions" aria-label="Desktop site actions">
+            <button id="desktop-reset-game" class="reset-btn" type="button">Reset</button>
+            <div class="footer-links desktop-footer-links" aria-label="charity water links">
+                <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">charity: water</a>
+                <a href="https://www.charitywater.org/our-work" target="_blank" rel="noopener noreferrer">Our Work</a>
+                <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate</a>
+            </div>
+        </div>
     </header>
+
     <main>
         <section id = "home" class="game-section">
-            <div class="brand-lockup">
-                <img class="brand-logo" src="cw_vertical_white.jpg" alt="CleanTap logo">
-                <noscript>
-                    <p class="brand-logo-fallback">CleanTap</p>
-                </noscript>
-                <p class="brand-tagline">A charity: water inspired clean water idle game</p>
-            </div>
             <h2>Home</h2>
             <div class="home-corner-actions">
                 <button id="info" class="corner-btn" aria-label="About charity: water" type="button">ℹ️</button>
@@ -75,6 +76,7 @@
         <section id = "upgrades" class="game-section">
             <h2>⬆️Upgrades</h2>
             <p class="upgrade-summary">Upgrades owned: <span id="total-upgrades-owned">0</span></p>
+            <p id="upgrade-empty-state" class="upgrade-empty-state">Collect droplets to begin unlocking upgrades!</p>
             <div class="upgrades-grid">
                 <button class="upgrade-card" data-upgrade-id="pump" type="button">
                     <h3><span class="upgrade-icon" aria-hidden="true">🪣</span> Hand-dug Wells</h3>
@@ -150,13 +152,32 @@
             <p>Global rankings coming soon.</p>
         </section>
     </main>
-    <footer>
-        <button id="reset-game" class="reset-btn" type="button">Reset</button>
-        <div class="footer-links" aria-label="charity water links">
-            <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">charity: water</a>
-            <a href="https://www.charitywater.org/our-work" target="_blank" rel="noopener noreferrer">Our Work</a>
-            <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate</a>
+    <footer class="mobile-footer" aria-label="Mobile site footer">
+        <div class="mobile-footer-top">
+            <div class="mobile-footer-brand">
+                <h1>CleanTap</h1>
+                <p class="brand-tagline">A charity: water inspired clean water idle game</p>
+            </div>
+            <div class="mobile-footer-logo">
+                <img class="brand-logo mobile-footer-brand-logo" src="cw_vertical_white.jpg" alt="CleanTap logo">
+            </div>
+            <div class="mobile-footer-actions">
+                <button id="reset-game" class="reset-btn" type="button">Reset</button>
+                <div class="footer-links mobile-footer-links" aria-label="charity water links">
+                    <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">charity: water</a>
+                    <a href="https://www.charitywater.org/our-work" target="_blank" rel="noopener noreferrer">Our Work</a>
+                    <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate</a>
+                </div>
+            </div>
         </div>
+        <nav class="mobile-nav" aria-label="Primary navigation">
+            <ul>
+                <li><button class="nav-item is-active" data-target="home" type="button">Home</button></li>
+                <li><button class="nav-item" data-target="upgrades" type="button">Upgrades</button></li>
+                <li><button class="nav-item" data-target="communities" type="button">Communities</button></li>
+                <li><button class="nav-item" data-target="rankings" type="button">Rankings</button></li>
+            </ul>
+        </nav>
     </footer>
 
     <div id="offline-popup" class="offline-popup" hidden>

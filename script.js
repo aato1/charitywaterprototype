@@ -9,6 +9,7 @@ const SAVE_KEY = "cleantap-save-v1";
 const OFFLINE_PROGRESS_CAP_SECONDS = 14400;
 const OFFLINE_MIN_SECONDS = 60;
 const SUCCESS_SOUND_COOLDOWN_MS = 200;
+const SUCCESS_SOUND_VOLUME = 0.28;
 
 const DIFFICULTY_CONFIG = {
     easy: {
@@ -92,6 +93,7 @@ let resetGameButton = document.getElementById("reset-game");
 let dropdisplay = document.getElementById("dropdisplay");
 let ratedisplay = document.getElementById("ratedisplay");
 let totalUpgradesOwned = document.getElementById("total-upgrades-owned");
+let upgradeEmptyState = document.getElementById("upgrade-empty-state");
 let difficultyDisplay = document.getElementById("difficulty-display");
 let nextMilestone = document.getElementById("next-milestone");
 let milestoneList = document.getElementById("milestone-list");
@@ -110,6 +112,7 @@ let resourcePopupText = document.getElementById("resource-popup-text");
 let resourcePopupPrimary = document.getElementById("resource-popup-primary");
 let resourcePopupClose = document.getElementById("resource-popup-close");
 let successSound = document.getElementById("success-sound");
+let resetButtons = [];
 let unlockToastStack = null;
 let unlockRevealState = {};
 let milestoneCompletionState = {};
@@ -316,6 +319,7 @@ function buyUpgrade(upgradeId, card) {
 
 function updateUpgradeCards() {
     let totalOwned = 0;
+    let unlockedCount = 0;
 
     upgradeCards.forEach(function(card) {
         let upgradeId = card.dataset.upgradeId;
@@ -348,6 +352,8 @@ function updateUpgradeCards() {
             return;
         }
 
+        unlockedCount += 1;
+
         let costNode = card.querySelector(".upgrade-cost");
         let ownedNode = card.querySelector(".upgrade-owned");
         let rateNode = card.querySelector(".upgrade-rate");
@@ -369,6 +375,10 @@ function updateUpgradeCards() {
 
     if (totalUpgradesOwned) {
         totalUpgradesOwned.innerText = totalOwned;
+    }
+
+    if (upgradeEmptyState) {
+        upgradeEmptyState.hidden = unlockedCount > 0;
     }
 }
 
@@ -467,6 +477,7 @@ function playSuccessSound() {
 
     lastSuccessSoundAt = now;
 
+    successSound.volume = SUCCESS_SOUND_VOLUME;
     successSound.currentTime = 0;
     let playPromise = successSound.play();
 
@@ -819,12 +830,20 @@ function clock() {
     setTimeout(clock, 1000);
 }
 
+function wireResetButtons() {
+    resetButtons.forEach(function(button) {
+        button.addEventListener("click", resetGame);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     navItems = document.querySelectorAll(".nav-item");
     gameSections = document.querySelectorAll(".game-section");
     upgradeCards = document.querySelectorAll(".upgrade-card");
+    resetButtons = document.querySelectorAll(".reset-btn");
     resetGameButton = document.getElementById("reset-game");
     totalUpgradesOwned = document.getElementById("total-upgrades-owned");
+    upgradeEmptyState = document.getElementById("upgrade-empty-state");
     difficultyDisplay = document.getElementById("difficulty-display");
     nextMilestone = document.getElementById("next-milestone");
     milestoneList = document.getElementById("milestone-list");
@@ -874,9 +893,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    if (resetGameButton) {
-        resetGameButton.addEventListener("click", resetGame);
-    }
+    wireResetButtons();
 
     if (milestoneLogToggle) {
         milestoneLogToggle.addEventListener("click", toggleMilestoneLog);
